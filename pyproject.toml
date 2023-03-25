@@ -8,7 +8,7 @@ packages = ["detect_app"]
 
 
 [project]
-name = "Detect App"
+name = "detect-app"
 authors = [
     {name = "Hannes"},
 ]
