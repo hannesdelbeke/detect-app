@@ -4,7 +4,7 @@ requires = ["setuptools", "setuptools-scm"]
 
 
 [tool.setuptools]
-packages = ["detect_app"]
+packages = ["detect_app.py"]
 
 
 [project]
