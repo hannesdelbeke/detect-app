@@ -2,7 +2,26 @@
 
 [![PyPI Downloads](https://img.shields.io/pypi/v/detect-app?color=0)](https://pypi.org/project/detect-app/)
 
-detect which app the python interpreter is running in
+Detect which app the python interpreter is running in. Usefull for cross app scripts
+
+Supports:
+```
+    Blender,
+    Fusion,
+    Houdini,
+    Krita,
+    MotionBuilder,
+    Marmoset,
+    Maya,
+    Max3ds,
+    Nuke,
+    SubstancePainter,
+    SubstanceDesigner,
+    Softimage,
+    Unreal,
+```
+
+## Instructions
 
 e.g. if run in Blender, will print `Blender"`
 ```python
