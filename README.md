@@ -23,7 +23,7 @@ Supports:
 
 ## Instructions
 
-e.g. if run in Blender, will print `Blender"`
+e.g. if run in Blender, will print `Blender`
 ```python
 import detect_app
 app_info = detect_app.detect_app()
