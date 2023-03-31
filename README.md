@@ -6,19 +6,36 @@ Detect which app the python interpreter is running in. Usefull for cross app scr
 
 Supports:
 ```
-    Blender,
-    Fusion,
-    Houdini,
-    Krita,
-    MotionBuilder,
-    Marmoset,
-    Maya,
-    Max3ds,
-    Nuke,
-    SubstancePainter,
-    SubstanceDesigner,
-    Softimage,
-    Unreal,
+Ansible
+AutoCAD
+Blender
+Calibre
+Cinema 4D
+Clarisse
+Flame
+Fusion
+Gaffer
+Gimp
+Houdini
+Inkscape
+Katana
+Krita
+Mari
+Marmoset
+3ds Max
+Maya
+Modo
+MotionBuilder
+Natron
+Nuke
+RV
+Revit
+Shotgun
+Scribus
+Softimage
+SubstanceDesigner
+SubstancePainter
+Unreal
 ```
 
 ## Instructions
