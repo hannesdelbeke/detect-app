@@ -2,9 +2,9 @@
 
 [![PyPI Downloads](https://img.shields.io/pypi/v/detect-app?color=0)](https://pypi.org/project/detect-app/)
 
-Detect which app the python interpreter is running in. Usefull for cross app scripts
+Detect which app the python interpreter is running in. Useful for cross app scripts
 
-Supports:
+## Supports:
 ```
 Ansible
 AutoCAD
@@ -12,7 +12,9 @@ Blender
 Calibre
 Cinema 4D
 Clarisse
+CryEngine
 Flame
+FreeCAD
 Fusion
 Gaffer
 Gimp

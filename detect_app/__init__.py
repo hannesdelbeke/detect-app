@@ -70,9 +70,20 @@ class Clarisse(App):
     action = lambda: attempt_import("clarisse_helper")
 
 
+class CryEngine(App):
+    id = "cry_engine"
+    action = lambda: attempt_import("SandboxBridge")  # todo is there a better module to use?
+
+
 class Flame(App):
     id = "flame"
     action = lambda: attempt_import("flame")
+
+
+class FreeCAD(App):
+    id = "freecad"
+    action = lambda: attempt_import("FreeCAD")
+    _name = "FreeCAD"
 
 
 class Fusion(App):
