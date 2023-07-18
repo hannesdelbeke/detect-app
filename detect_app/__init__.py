@@ -21,9 +21,11 @@ def attempt_import(module_name: str) -> Optional[types.ModuleType]:
 apps = []
 
 _apps_sys_exe_check = {
-    "maya": ["maya", "mayapy"],
-    "3dsmax": "3dsmax",
-    "unreal": ["ue4editor", "unrealeditor"]
+    "Maya": ["maya", "mayapy"],
+    "Max3ds": "3dsmax",
+    "RV": "rv",
+    "SubstancePainter": "adobe substance 3d painter",
+    "Unreal": ["ue4editor", "unrealeditor"]
 }
 
 class __AppMeta(type):
@@ -208,10 +210,10 @@ def detect_app() -> Optional[App]:
     for app, possible_name in _apps_sys_exe_check.items():
         if isinstance(possible_name, (tuple, list)):
             if exe_name in possible_name:
-                return getattr(sys.modules[__name__], app.title())
+                return getattr(sys.modules[__name__], app)
         else:
             if exe_name == possible_name:
-                return getattr(sys.modules[__name__], app.title())
+                return getattr(sys.modules[__name__], app)
 
     global apps
     for app in apps:
