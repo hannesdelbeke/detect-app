@@ -7,7 +7,8 @@ import contextlib
 from typing import Optional
 import logging
 import importlib
-
+import os
+import sys
 
 def attempt_import(module_name: str) -> Optional[types.ModuleType]:
     """attempt to import a module, return True if it succeeded"""
@@ -19,6 +20,13 @@ def attempt_import(module_name: str) -> Optional[types.ModuleType]:
 
 apps = []
 
+_apps_sys_exe_check = {
+    "Maya": ["maya", "mayapy"],
+    "Max3ds": "3dsmax",
+    "RV": "rv",
+    "SubstancePainter": "adobe substance 3d painter",
+    "Unreal": ["ue4editor", "unrealeditor"]
+}
 
 class __AppMeta(type):
     """meta class for App, used to track all apps. adds the class to the apps list if it has an id"""
@@ -155,6 +163,8 @@ class Nuke(App):
 class Revit(App):
     id = "revit"
     action = lambda: attempt_import("Autodesk.Revit")
+
+
 class RV(App):
     id = "rv"
     action = lambda: attempt_import("rv")
@@ -194,6 +204,17 @@ def detect_app() -> Optional[App]:
     """
     detect which app is currently running
     """
+    python_exe = sys.executable.lower()
+    exe_name = os.path.splitext(os.path.basename(python_exe))[0].lower()
+
+    for app, possible_name in _apps_sys_exe_check.items():
+        if isinstance(possible_name, (tuple, list)):
+            if exe_name in possible_name:
+                return getattr(sys.modules[__name__], app)
+        else:
+            if exe_name == possible_name:
+                return getattr(sys.modules[__name__], app)
+
     global apps
     for app in apps:
         if app.action():
