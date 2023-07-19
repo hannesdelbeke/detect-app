@@ -7,13 +7,15 @@ import contextlib
 from typing import Optional
 import logging
 import importlib
+import importlib.util
 import os
 import sys
+
 
 def attempt_import(module_name: str) -> Optional[types.ModuleType]:
     """attempt to import a module, return True if it succeeded"""
     with contextlib.suppress(ImportError):
-        importlib.import_module(module_name)
+        importlib.util.find_spec(module_name)
         return True
     return False
 
