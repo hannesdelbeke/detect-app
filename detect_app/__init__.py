@@ -20,16 +20,10 @@ def attempt_import(module_name: str) -> Optional[types.ModuleType]:
 
 apps = []
 
-_apps_sys_exe_check = {
-    "Maya": ["maya", "mayapy"],
-    "Max3ds": "3dsmax",
-    "RV": "rv",
-    "SubstancePainter": "adobe substance 3d painter",
-    "Unreal": ["ue4editor", "unrealeditor"]
-}
 
 class __AppMeta(type):
     """meta class for App, used to track all apps. adds the class to the apps list if it has an id"""
+    # any app class that inherits this meta class, will be added to the apps list
     def __new__(mcs, name, bases, dct):
         cls = super().__new__(mcs, name, bases, dct)
         if name != "App":
@@ -200,24 +194,55 @@ class Unreal(App):
     action = lambda: attempt_import("unreal")
 
 
+def detect_app_from_interpreter() -> Optional[App]:
+    """
+    detect which app the python interpreter is running in.
+    and use this to detect the app
+    """
+    python_exe = sys.executable.lower()  # C:\\Users\\...\\venv\\Scripts\\python.exe'
+    python_basename = os.path.basename(python_exe)  # python.exe
+    exe_name = os.path.splitext(python_basename)[0].lower()  # ('python', '.exe')
+
+    apps_sys_exe_check = {
+        Maya: ["maya", "mayapy"],
+        Max3ds: "3dsmax",
+        RV: "rv",
+        SubstancePainter: "adobe substance 3d painter",
+        Unreal: ["ue4editor", "unrealeditor"]
+    }
+
+    for app, possible_name in apps_sys_exe_check.items():
+
+        # support multiple possible names, always guarantee a list or tuple
+        if not isinstance(possible_name, (tuple, list)):
+            possible_name = (possible_name)
+
+        if exe_name in possible_name:
+            logging.debug(f"App detected '{app.id}' from interpreter")
+            return getattr(sys.modules[__name__], app)
+
+
 def detect_app() -> Optional[App]:
     """
     detect which app is currently running
     """
-    python_exe = sys.executable.lower()
-    exe_name = os.path.splitext(os.path.basename(python_exe))[0].lower()
-
-    for app, possible_name in _apps_sys_exe_check.items():
-        if isinstance(possible_name, (tuple, list)):
-            if exe_name in possible_name:
-                return getattr(sys.modules[__name__], app)
-        else:
-            if exe_name == possible_name:
-                return getattr(sys.modules[__name__], app)
+    app = detect_app_from_interpreter()
+    if app:
+        return app
 
     global apps
     for app in apps:
         if app.action():
-            logging.debug(f"app detected {app.id}")
+            logging.debug(f"App detected '{app.id}'")
             return app
 
+
+if __name__ == "__main__":
+    import cProfile
+    import time
+
+    start_time = time.time()
+    cProfile.run('detect_app()', sort='tottime')
+    end_time = time.time()
+    execution_time = end_time - start_time
+    print(f"Execution time: {execution_time} seconds")
