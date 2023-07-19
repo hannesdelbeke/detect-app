@@ -46,7 +46,7 @@ e.g. if run in Blender, will print `Blender`
 ```python
 import detect_app
 app_info = detect_app.detect_app()
-print(app_info.id)
+print(app_info.id)  # e.g. substance_painter
 ```
 right now app_info is very simple
 - **id**: `str` a unique identifier for the app, lowercase, underscores, not start with nr
