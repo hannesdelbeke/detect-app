@@ -205,19 +205,14 @@ def detect_app_from_interpreter() -> Optional[App]:
 
     apps_sys_exe_check = {
         Maya: ["maya", "mayapy"],
-        Max3ds: "3dsmax",
-        RV: "rv",
-        SubstancePainter: "adobe substance 3d painter",
+        Max3ds: ["3dsmax"],
+        RV: ["rv"],
+        SubstancePainter: ["adobe substance 3d painter"],
         Unreal: ["ue4editor", "unrealeditor"]
     }
 
-    for app, possible_name in apps_sys_exe_check.items():
-
-        # support multiple possible names, always guarantee a list or tuple
-        if not isinstance(possible_name, (tuple, list)):
-            possible_name = (possible_name)
-
-        if exe_name in possible_name:
+    for app, possible_names in apps_sys_exe_check.items():
+        if exe_name in possible_names:
             logging.debug(f"App detected '{app.id}' from interpreter")
             return getattr(sys.modules[__name__], app)
 
