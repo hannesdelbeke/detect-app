@@ -219,10 +219,31 @@ def detect_app_from_interpreter() -> Optional[App]:
             return getattr(sys.modules[__name__], app)
 
 
+def detect_app_from_env_var() -> Optional[App]:
+    """
+    enables overwriting the detected app, e.g. for complex pipelines, or debugging purpose
+    set DETECT_APP_FORCE_ID env var to the app id you want to force
+    """
+    app_id = os.getenv("DETECT_APP_FORCE_ID")
+    # return the class with the name, check apps
+    if app_id:
+        for app in apps:
+            if app.id == app_id:
+                logging.debug(f"App OVERWRITTEN from env var: '{app.id}'")
+                return app
+        else:
+            logging.warning(f"App from env var '{app_id}' could not be found")
+            return None
+
+
 def detect_app() -> Optional[App]:
     """
     detect which app is currently running
     """
+    app = detect_app_from_env_var()
+    if app:
+        return app
+
     app = detect_app_from_interpreter()
     if app:
         return app

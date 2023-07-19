@@ -42,7 +42,7 @@ Unreal
 
 ## Instructions
 
-e.g. if run in Blender, will print `Blender`
+e.g. prints `Blender` if run in Blender
 ```python
 import detect_app
 app_info = detect_app.detect_app()
@@ -52,3 +52,7 @@ right now app_info is very simple
 - **id**: `str` a unique identifier for the app, lowercase, underscores, not start with nr
 - **action**: `callable` that returns true if run in the app. usually just attempts to import an app specific module
 - **get_name()**: `method` to return a pretty name.
+
+## advanced
+env variable
+`DETECT_APP_FORCE_ID` can be set to the app id, which will force a specific app to be detected. Useful for testing.
