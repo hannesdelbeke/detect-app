@@ -216,7 +216,7 @@ def detect_app_from_interpreter() -> Optional[App]:
     for app, possible_names in apps_sys_exe_check.items():
         if exe_name in possible_names:
             logging.debug(f"App detected '{app.id}' from interpreter")
-            return getattr(sys.modules[__name__], app)
+            return app
 
 
 def detect_app_from_env_var() -> Optional[App]:
