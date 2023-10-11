@@ -14,10 +14,7 @@ import sys
 
 def attempt_import(module_name: str) -> Optional[types.ModuleType]:
     """attempt to import a module, return True if it succeeded"""
-    with contextlib.suppress(ImportError):
-        importlib.util.find_spec(module_name)
-        return True
-    return False
+    return bool(importlib.util.find_spec(module_name))
 
 
 apps = []
