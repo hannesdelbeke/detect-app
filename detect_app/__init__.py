@@ -315,14 +315,15 @@ class SubstanceDesigner(App):
         import sd
         return sd.getContext().getSDApplication().getAppVersion()
 
+
 class SubstancePainter(App):
     id = "substance_painter"
     action = lambda: attempt_import("substance_painter")
 
     @staticmethod 
     def version():
-        import alg
-        return alg.application.version()
+        import substance_painter._version
+        return substance_painter._version.__version_info__  # tuple e.g. (0, 2, 10)
 
 
 class Unreal(App):
