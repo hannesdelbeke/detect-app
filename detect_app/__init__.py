@@ -39,7 +39,10 @@ class App(metaclass=__AppMeta):
     @classmethod
     def get_name(cls):
         return cls.id.replace("_", " ").title() if not cls._name else cls._name
-
+      
+    @staticmethod 
+    def version():
+        raise NotImplementedError
 
 class Ansible(App):
     id = "ansible"
@@ -54,7 +57,12 @@ class AutoCAD(App):
 class Blender(App):
     id = "blender"
     action = lambda: attempt_import("bpy")
-
+    
+    @staticmethod 
+    def version():
+        import bpy
+        return bpy.app.version_string  # str e.g. '2.83.2'
+        return bpy.app.version  # tuple e.g. (2, 76, 0)
 
 class Calibre(App):
     id = "calibre"
@@ -64,7 +72,11 @@ class Calibre(App):
 class Cinema4D(App):
     id = "cinema4d"
     action = lambda: attempt_import("c4d")
-
+    
+    @staticmethod 
+    def version():
+        import c4d
+        c4d.GetC4DVersion()  # int e.g. 12016
 
 class Clarisse(App):
     id = "clarisse"
@@ -131,16 +143,31 @@ class Marmoset(App):
     id = "marmoset"
     action = lambda: attempt_import("mset")
 
+    @staticmethod 
+    def version():
+        import mset
+        getToolbagVersion  # int, e.g. 4062
 
 class Maya(App):
     id = "maya"
     action = lambda: attempt_import("maya")
 
+    @staticmethod 
+    def version():
+        import maya.cmds as cmds
+        return cmds.about(version=True)  # str
+        
 
 class Max3ds(App):
     id = "max3ds"
     _name = "3ds Max"
     action = lambda: attempt_import("pymxs")
+    
+    @staticmethod 
+    def version():
+        import pymxs
+        return pymxs.runtime.maxversion()  # <Array<#(22000, 55, 0, 22, 2, 0, 2126, 2020, ".2 Update ")>>
+        # TODO convert from maxscript to int or string
 
 
 class MotionBuilder(App):
@@ -192,6 +219,7 @@ class Unreal(App):
     id = "unreal"
     action = lambda: attempt_import("unreal")
 
+    # Get Engine Version blueprint
 
 def detect_app_from_interpreter() -> Optional[App]:
     """
