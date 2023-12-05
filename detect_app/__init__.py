@@ -44,14 +44,27 @@ class App(metaclass=__AppMeta):
     def version():
         raise NotImplementedError
 
+
 class Ansible(App):
     id = "ansible"
     action = lambda: attempt_import("ansible")
-
+    
+    # @staticmethod 
+    # def version():
+    #     import subprocess
+    #     process = subprocess.run(['ansible', '--version'], capture_output=True, text=True)
+    #     version = process.stdout
+        
 
 class AutoCAD(App):
     id = "autocad"
     action = lambda: attempt_import("pyautocad")  # 3rd party module
+
+    @staticmethod 
+    def version():
+        import win32com.client
+        acad = win32com.client.Dispatch("AutoCAD.Application")
+        return acad.Version
 
 
 class Blender(App):
@@ -64,9 +77,17 @@ class Blender(App):
         return bpy.app.version_string  # str e.g. '2.83.2'
         return bpy.app.version  # tuple e.g. (2, 76, 0)
 
+
 class Calibre(App):
     id = "calibre"
     action = lambda: attempt_import("calibre")
+
+    # @staticmethod 
+    # def version():
+    #     import subprocess
+    #     # Run the 'calibre' command with the '--version' option
+    #     process = subprocess.run(['calibre', '--version'], capture_output=True, text=True)
+    #     version = process.stdout
 
 
 class Cinema4D(App):
@@ -78,9 +99,15 @@ class Cinema4D(App):
         import c4d
         c4d.GetC4DVersion()  # int e.g. 12016
 
+
 class Clarisse(App):
     id = "clarisse"
     action = lambda: attempt_import("clarisse_helper")
+    
+    @staticmethod 
+    def version():
+        import clarisse_helper
+        retunr clarisse_helper.get_version()
 
 
 class CryEngine(App):
@@ -98,6 +125,12 @@ class FreeCAD(App):
     action = lambda: attempt_import("FreeCAD")
     _name = "FreeCAD"
 
+    @staticmethod 
+    def version():
+        import FreeCAD
+        version = FreeCAD.Version()
+        return version
+
 
 class Fusion(App):
     id = "fusion"
@@ -108,20 +141,41 @@ class Gaffer(App):
     id = "gaffer"
     action = lambda: attempt_import("Gaffer")
 
+    @staticmethod 
+    def version():
+        import gaffer
+        return gaffer.__version__
+
 
 class Gimp(App):
     id = "gimp"
     action = lambda: attempt_import("gimp")
+
+    @staticmethod 
+    def version():
+        import gimp
+        return (gimp.major_version, gimp.minor_version)
+        # TODO is there a patch version?
 
 
 class Houdini(App):
     id = "houdini"
     action = lambda: attempt_import("hou")
 
+    @staticmethod 
+    def version():
+        import hou
+        return hou.applicationVersion()
+
 
 class Inkscape(App):
     id = "inkscape"
     action = lambda: attempt_import("inkex")
+    
+    @staticmethod 
+    def version():
+        import inkex
+        return inkex.inkscape.version
 
 
 class Katana(App):
@@ -132,6 +186,12 @@ class Katana(App):
 class Krita(App):
     id = "krita"
     action = lambda: attempt_import("krita")
+
+    @staticmethod 
+    def version():
+        from krita import Krita
+        krita_app = Krita.instance()
+        return krita_app.version()
 
 
 class Mari(App):
@@ -146,7 +206,8 @@ class Marmoset(App):
     @staticmethod 
     def version():
         import mset
-        getToolbagVersion  # int, e.g. 4062
+        return mset.getToolbagVersion()  # int, e.g. 4062
+
 
 class Maya(App):
     id = "maya"
@@ -173,53 +234,106 @@ class Max3ds(App):
 class MotionBuilder(App):
     id = "motion_builder"
     action = lambda: attempt_import("pyfbsdk")
+    
+    @staticmethod 
+    def version():
+        from pyfbsdk import FBApplication
+        mb_app = FBApplication()
+        return mb_app.Version
 
 
 class Nuke(App):
     id = "nuke"
     action = lambda: attempt_import("nuke")
+    
+    @staticmethod 
+    def version():
+        import nuke
+        return nuke.NUKE_VERSION_STRING
 
 
 class Revit(App):
     id = "revit"
     action = lambda: attempt_import("Autodesk.Revit")
 
+    @staticmethod 
+    def version():
+        import clr
+        clr.AddReference("RevitAPI")  # allow Python to use classes & functions defined in the Revit .NET API
+        from Autodesk.Revit.Application import Application
+        revit_app = Application()
+        return revit_app.VersionNumber
+
 
 class RV(App):
     id = "rv"
     action = lambda: attempt_import("rv")
 
+    @staticmethod 
+    def version():
+        import rv.commands
+        return rv.commands.appVersion()
+
 
 class Shotgun(App):
     id = "shotgun"
     action = lambda: attempt_import("shotgun_api3")
+    
+    @staticmethod 
+    def version():
+        from shotgun_api3 import __version__
+        return __version__  # version of the py API, not shotgun itself
 
 
 class Scribus(App):
     id = "scribus"
     action = lambda: attempt_import("scribus")
+    
+    @staticmethod 
+    def version():
+        import scribus
+        return scribus.version()
 
 
 class Softimage(App):
     id = "softimage"
     action = lambda: attempt_import("PySoftimage")
+    
+    @staticmethod 
+    def version():
+        import win32com.client
+        app = win32com.client.Dispatch('XSI.Application')
+        return app.Version
 
 
 class SubstanceDesigner(App):
     id = "substance_designer"
     action = lambda: attempt_import("pysbs")
 
+    @staticmethod 
+    def version():
+        import sd
+        return sd.getContext().getSDApplication().getAppVersion()
 
 class SubstancePainter(App):
     id = "substance_painter"
     action = lambda: attempt_import("substance_painter")
+
+    @staticmethod 
+    def version():
+        import alg
+        return alg.application.version()
 
 
 class Unreal(App):
     id = "unreal"
     action = lambda: attempt_import("unreal")
 
-    # Get Engine Version blueprint
+    @staticmethod 
+    def version():
+        import unreal
+        return unreal.SystemLibrary.get_engine_version()
+
 
 def detect_app_from_interpreter() -> Optional[App]:
     """
