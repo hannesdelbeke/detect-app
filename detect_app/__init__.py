@@ -216,7 +216,16 @@ class Maya(App):
     @staticmethod 
     def version():
         import maya.cmds as cmds
-        return cmds.about(version=True)  # str
+        version = cmds.about(version=True)  # str
+
+        # handle preview releases, where cmds.about(version=True) doesn't return the year
+        if version == "Preview Release":
+            product = cmds.about(product=True)  # str e.g. 'Maya 2025'
+            # preview releases usually are 1 year ahead of the version number
+            year = product.split()[-1]  # str e.g. '2025'
+            version = int(year) + 1
+
+        return version
         
 
 class Max3ds(App):
