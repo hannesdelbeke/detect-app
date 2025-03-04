@@ -107,7 +107,7 @@ class Clarisse(App):
     @staticmethod 
     def version():
         import clarisse_helper
-        retunr clarisse_helper.get_version()
+        return clarisse_helper.get_version()
 
 
 class CryEngine(App):
